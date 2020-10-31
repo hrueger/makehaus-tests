@@ -1,0 +1,22 @@
+{
+  "name": "makehaus-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrueger/makehaus-tests.git"
+  },
+  "author": "Hannes Rüger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hrueger/makehaus-tests/issues"
+  },
+  "homepage": "https://github.com/hrueger/makehaus-tests#readme",
+  "dependencies": {
+    "@makeproaudio/makehaus-js": "^1.0.6"
+  }
+}
