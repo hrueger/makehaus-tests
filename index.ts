@@ -13,7 +13,7 @@ const colors = [
 ];
 
 const tiles: (TileEncoder8 | TileEncoder12 | TileFader4 | TileLedButton12 | TileLedButton8)[] = [];
-// diagnostics.start(hub);
+diagnostics.start(hub);
 let currentIdx = -1;
 
 hub.on(Tile.ENCODER8, (tile: TileEncoder8) => {
@@ -21,22 +21,31 @@ hub.on(Tile.ENCODER8, (tile: TileEncoder8) => {
 });
 hub.on(Tile.ENCODER12, (tile: TileEncoder12) => {
     tiles.push(tile);
+    function update() {
+        if (currentIdx == colors.length) currentIdx = 0;
+        if (currentIdx == -1) currentIdx = colors.length - 1;
+        for (const t of tiles.filter((tl) => [Tile.LEDBUTTON8, Tile.LEDBUTTON12].includes(tl.tileType())) as TileLedButton8[]) {
+            for (const x of t.widgets) {
+                x.setColor(colors[currentIdx]);
+            }
+        }
+    }
+    for (const w of tile.widgets) {
+        w.on("right", () => {
+            currentIdx++;
+            update();
+        })
+        w.on("left", () => {
+            currentIdx--;
+            update();
+        })
+    }
 });
 hub.on(Tile.MOTORFADER4, (tile: TileFader4) => {
     tiles.push(tile);
 });
 hub.on(Tile.LEDBUTTON8, (tile: TileLedButton12) => {
     tiles.push(tile);
-    for (const w of tile.widgets) {
-        w.on("pressed", () => {
-            currentIdx++;
-            for (const t of tiles.filter((tl) => [Tile.LEDBUTTON8, Tile.LEDBUTTON12].includes(tl.tileType())) as TileLedButton8[]) {
-                for (const x of t.widgets) {
-                    x.setColor(colors[currentIdx]);
-                }
-            }
-        })
-    }
 });
 hub.on(Tile.LEDBUTTON12, (tile: TileLedButton12) => {
     tiles.push(tile);
